@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3360/et1910?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/et1910?serverTimezone=GMT
     username: root
     password: etoak
     hikari:
@@ -20,7 +20,7 @@ spring:
 #mybatis
 mybatis:
   type-aliases-package: com.etoak.bean
-  mapper-locations: classpath:mappers/*.xml
+  mapper-locations: classpath:/mappers/*.xml
 
 #pagehelper
 pagehelper:
