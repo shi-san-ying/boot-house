@@ -25,3 +25,8 @@ mybatis:
 #pagehelper
 pagehelper:
   reasonable: true
+
+#开启打印sql  主动只喝了logging
+logging:
+  level:
+    com.etoak.mapper: debug
