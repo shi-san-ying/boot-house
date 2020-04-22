@@ -1,0 +1,22 @@
+package com.etoak.exception;
+
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
+
+@ControllerAdvice
+@Slf4j //可以在这里记下日志
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ParamException.class)
+    public ModelAndView handleParamException(ParamException e){
+        log.error(e.getMessage(),e);
+        ModelAndView modelAndView =new ModelAndView();
+        modelAndView.addObject("error",e.getMessage());
+        modelAndView.setViewName("error");
+        return modelAndView;
+
+    }
+}

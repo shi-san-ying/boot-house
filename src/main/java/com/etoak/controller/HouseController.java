@@ -1,19 +1,27 @@
 package com.etoak.controller;
 
 import com.etoak.bean.House;
+import com.etoak.exception.ParamException;
 import com.etoak.service.HouseService;
+import com.etoak.utils.ValidateUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jca.cci.connection.ConnectionFactoryUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -39,7 +47,41 @@ public class HouseController {
 
     //添加用户
     @PostMapping("/add")
-    public String addHouse(@RequestParam("file") MultipartFile file,House house) throws IOException {
+    public String addHouse(@RequestParam("file") MultipartFile file, @Valid House house, BindingResult bingResult) throws IOException {
+       //hirbernate 得验证
+        List<ObjectError> allErrors = bingResult.getAllErrors();
+        if(CollectionUtils.isNotEmpty(allErrors)){
+            StringBuffer  msgBuffer=new StringBuffer();
+            for(ObjectError objectError: allErrors){
+                String message = objectError.getDefaultMessage();
+                msgBuffer.append(message);
+            }
+            throw new ParamException("参数校验失败：" + msgBuffer.toString());
+        }
+
+        //文件的全名称  xxx.jpg
+        String OriginalFilename=file.getOriginalFilename();
+        //生成文件的新得前缀
+        String prefix= UUID.randomUUID().toString().replaceAll("-","");
+        //新的文件名字 uuid.文件后缀-原始文件名称
+        String newFileName=prefix+"-"+OriginalFilename;
+
+        //上传路径  1.本地上传文件目录   3.访问得路径
+        //<mvc:resources location="file:d:/upload" mapping="/pics/**"
+        File dastFile=new File(this.uploadDirectory,newFileName);
+        //执行上传
+        file.transferTo(dastFile);
+
+        //给house设置访问路径
+        house.setPic(this.SavaPathPrefix+newFileName);
+
+        houseService.addHouse(house);
+        return "redirect:/house/toAdd";
+    }
+    @PostMapping("/add2")
+    public String addHouse(@RequestParam("file") MultipartFile file, House house) throws IOException {
+        //hirbernate 得验证
+        ValidateUtils.validate(house);
         //文件的全名称  xxx.jpg
         String OriginalFilename=file.getOriginalFilename();
         //生成文件的新得前缀
