@@ -43,6 +43,6 @@ public class HouseServiceImpl  implements HouseService {
         PageHelper.startPage(pageNum,pageSize);
         List<HouseVo> houseVoList =houseMapper.queryList(houseVo);
         PageInfo<HouseVo> info =new PageInfo<>(houseVoList);
-        return new Page<HouseVo>(info.getPageNum(),info.getPageSize(),info.getTotal(),houseVoList,info.getPages());
+        return new Page<HouseVo>(info.getPageNum(),info.getPageSize(),houseVoList,info.getTotal(),info.getPages());
     }
 }

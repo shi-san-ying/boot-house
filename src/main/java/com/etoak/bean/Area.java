@@ -1,12 +1,14 @@
 package com.etoak.bean;
 
 import lombok.Data;
+
+import java.io.Serializable;
 /*
 * 地区表对应实体类
 * */
 
 @Data
-public class Area {
+public class Area implements Serializable {
     //主键
     private Integer id;
     //父id（省级父id为0）
