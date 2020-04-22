@@ -11,6 +11,9 @@ public interface AreaMapper {
     * */
     List<Area> queryByPid(@Param("pid")int pid);
 
+<<<<<<< HEAD
     //根据id查询地区
+=======
+>>>>>>> dev
     Area queryById(@Param("id") int id);
 }
