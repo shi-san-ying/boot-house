@@ -20,7 +20,7 @@ public class ValidateUtils {
         validator=factory.getValidator();
     }
 
-<<<<<<< HEAD
+
     public static void validate(Object object) {
         Set<ConstraintViolation<Object>> violations = validator.validate(object);
         if (CollectionUtils.isNotEmpty(violations)) {

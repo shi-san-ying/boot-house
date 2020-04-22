@@ -9,9 +9,6 @@
         values
         (#{province},#{city},#{area},#{areaName},#{rentMode},#{houseType},#{orientation},#{rental},#{address},#{pic},now())
     </insert>
-<<<<<<< HEAD
-=======
-
     <select id="queryList" parameterType="HouseVo" resultType="HouseVo">
         select t.id,
 			 t.province,
@@ -32,7 +29,5 @@
         left join t_springmvc_dict t2 on t.rent_mode = t2.`value` AND t2.group_id = 'rent_mode'
         left join t_springmvc_dict t3 on t.house_type = t3.`value` AND t3.group_id = 'house_type'
         left join t_springmvc_dict t4 on t.orientation = t4.`value` ANd t4.group_id = 'orientation'
-
     </select>
->>>>>>> dev
 </mapper>

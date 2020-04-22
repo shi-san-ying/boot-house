@@ -1,8 +1,5 @@
 package com.etoak.bean;
 
-<<<<<<< HEAD
-public class HouseVo {
-=======
 import lombok.Data;
 
 @Data
@@ -14,6 +11,4 @@ public class HouseVo extends  House {
     //朝向name
     private  String orientationName;
 
-
->>>>>>> dev
 }
