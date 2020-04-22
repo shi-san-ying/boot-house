@@ -30,7 +30,6 @@
                 </select>
             </div>
         </div>
-
         <!--   区    -->
         <div class="form-group">
             <label for="area" class="col-sm-2 control-label">所在区(县)</label>
@@ -83,20 +82,18 @@
         </div>
         <!--    图片    -->
         <div class="form-group">
-            <label for="pic" class="col-sm-2 control-label">图片</label>
+            <label for="file" class="col-sm-2 control-label">图片</label>
             <div class="col-sm-4 input-group">
-                <input type="file" name="pic" id="pic" class="form-control">
+                <input type="file" name="file" id="file" class="form-control">
             </div>
         </div>
-
+        <!--    添加    -->
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">添加</button>
             </div>
         </div>
     </form>
-
-
 
     <script th:src="@{/lib/js/jquery/jquery.min.js}"></script>
     <script th:src="@{/lib/bootstrap/js/bootstrap.min.js}"></script>
@@ -162,9 +159,8 @@
                 });
 
             },
-            /*
-            * 查询租赁方式 户姓朝向
-            * */
+
+            // 查询租赁方式 户姓朝向
             queryDict:function (groupId){
                 $.ajax({
                     url: path+'/dict/'+groupId,
@@ -181,6 +177,7 @@
                     }
                 })
             },
+
             //校验表单项
             validateForm:function () {
                 //表单id
@@ -213,9 +210,17 @@
                     rules:{
                         //针对name属性抓取   {} 为对象 一个属性有一个值
                         province: 'required',//为name属性为province得表单项进行校验
+                        city:'required',
+                        area:'required',
+                        rentMode:'required',
                         address:{
                             required:true,
                             maxlength:10
+                        },
+                        rental:{
+                            required:true,
+                            positiveInt:true,
+                            max:100000
                         }
                     },
                     //失败后显示消息：messages
@@ -224,12 +229,29 @@
                         address:{
                             required:"地址为必填",
                             maxlength:"十个字符以内"
-                        }
-                    },
+                        },
+                        rental:{
+                            required:'租金必填',
+                            positiveInt:'必须大于0得正整数',
+                            max:'最高十万'
+                        },
+                        area:'区县必填',
+                        rentMode:'租赁方式必填',
+                    }
 
-                })
-            }
-        }
+                });
+
+                // 自定义校验规则  $.validate.addMethod(校验规则名称，校验方式，默认的提示规则)
+                $.validator.addMethod('positiveInt',function (value,element) {
+                    let reg = /^\+?[1-9]\d*$/;
+                    return this.optional(element) || (reg.test(value))
+                },'必须是大于0得正整数')
+            },
+
+
+
+
+        };
     </script>
 </body>
 </html>

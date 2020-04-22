@@ -16,6 +16,9 @@ spring:
   thymeleaf:
     cache: false
     encoding: UTF-8
+  #限制图片大小 默认1mb
+  servlet:
+    multipart:2MB
 
 #mybatis
 mybatis:
@@ -30,3 +33,10 @@ pagehelper:
 logging:
   level:
     com.etoak.mapper: debug
+
+#文件上传配置
+#<mvc:resources location="file:d:/upload" mapping="/pics/**"
+upload:
+  dir: d:/upload/
+  savePathPrefix: /pics/
+  mapping: /pics/**
