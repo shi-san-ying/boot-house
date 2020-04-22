@@ -7,10 +7,20 @@ import com.etoak.bean.Page;
 import com.etoak.mapper.AreaMapper;
 import com.etoak.mapper.HouseMapper;
 import com.etoak.service.HouseService;
+<<<<<<< HEAD
+=======
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+>>>>>>> dev
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+
+>>>>>>> dev
 @Service
 @Slf4j
 public class HouseServiceImpl  implements HouseService {
@@ -36,6 +46,13 @@ public class HouseServiceImpl  implements HouseService {
 
     @Override
     public Page<HouseVo> queryList(int pageNum, int pageSize, HouseVo houseVo) {
+<<<<<<< HEAD
         return null;
+=======
+        PageHelper.startPage(pageNum,pageSize);
+        List<HouseVo> houseVoList =houseMapper.queryList(houseVo);
+        PageInfo<HouseVo> info =new PageInfo<>(houseVoList);
+        return new Page<HouseVo>(info.getPageNum(),info.getPageSize(),info.getTotal(),houseVoList,info.getPages());
+>>>>>>> dev
     }
 }
