@@ -2,6 +2,8 @@ package com.etoak.service.impl;
 
 import com.etoak.bean.Area;
 import com.etoak.bean.House;
+import com.etoak.bean.HouseVo;
+import com.etoak.bean.Page;
 import com.etoak.mapper.AreaMapper;
 import com.etoak.mapper.HouseMapper;
 import com.etoak.service.HouseService;
@@ -11,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class HousServiceImpl  implements HouseService {
+public class HouseServiceImpl  implements HouseService {
     @Autowired
     HouseMapper houseMapper;
 
@@ -30,5 +32,10 @@ public class HousServiceImpl  implements HouseService {
          house.setAreaName(area.getName());
         return houseMapper.addHouse(house);
 
+    }
+
+    @Override
+    public Page<HouseVo> queryList(int pageNum, int pageSize, HouseVo houseVo) {
+        return null;
     }
 }
