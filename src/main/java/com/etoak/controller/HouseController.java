@@ -8,11 +8,9 @@ import com.etoak.service.HouseService;
 import com.etoak.utils.ValidateUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jca.cci.connection.ConnectionFactoryUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -22,8 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -106,11 +103,52 @@ public class HouseController {
 
     @GetMapping(value = "/list", produces = "application/json;charset=UTF-8")
     @ResponseBody
-    public Page<HouseVo> queryList(
-            @RequestParam(required = false, defaultValue = "1") int pageNum,
-            @RequestParam(required = false, defaultValue = "10") int pageSize,
-            HouseVo houseVo) {
+    public Page<HouseVo> queryList(@RequestParam(required = false, defaultValue = "1") int pageNum,
+                                   @RequestParam(required = false, defaultValue = "5") int pageSize,
+                                   HouseVo houseVo,
+                                   @RequestParam(value = "rentalList[]",required = false)String[] rentalList
+    ) {
+        //1.处理价格范围的方法
+        this.handleRental(houseVo,rentalList);
         log.info("pageNum - {}, pageSize - {}, houseVo - {}", pageNum, pageSize, houseVo);
-        return houseService.queryList(pageNum, pageSize, houseVo);
+        Page<HouseVo> houseVoPage = houseService.queryList(pageNum, pageSize, houseVo,rentalList);
+        return houseVoPage;
     }
+
+    //处理价格范围的方法
+    private void handleRental(HouseVo houseVo, String[] rentalList) {
+
+        if(ArrayUtils.isNotEmpty(rentalList)){
+            List<Map<String,Integer>> rentalMapList = new ArrayList<>();
+
+            log.info(String.valueOf(rentalList));//rentalList[]: 100-1000  rentalList[]: 1000-1500
+
+            for(String rental:rentalList){
+                //rental=100-1000; 或  rental=1000-1500
+                String[] rentalArray =rental.split("-");
+                //rentalArray=[100,1000]
+                Map<String,Integer> rentalMap = new HashMap<>();
+                //rentalMap=["start",100],["end",1000]
+                rentalMap.put("start",Integer.valueOf(rentalArray[0]));
+                rentalMap.put("end",Integer.valueOf(rentalArray[1]));
+                //rentalMapList={["start",100],["end",1000]}
+                rentalMapList.add(rentalMap);
+            }
+            houseVo.setRentalMapList(rentalMapList);
+        }
+
+    }
+
+
+
+    /*
+    * 跳转到list页面
+    * */
+    @GetMapping("/toList")
+    public String toList(){
+        return "house/list";
+    }
+
+
+
 }

@@ -39,7 +39,7 @@ public class HouseServiceImpl  implements HouseService {
     }
 
     @Override
-    public Page<HouseVo> queryList(int pageNum, int pageSize, HouseVo houseVo) {
+    public Page<HouseVo> queryList(int pageNum, int pageSize, HouseVo houseVo, String[] rentalList) {
         PageHelper.startPage(pageNum,pageSize);
         List<HouseVo> houseVoList =houseMapper.queryList(houseVo);
         PageInfo<HouseVo> info =new PageInfo<>(houseVoList);

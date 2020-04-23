@@ -1,5 +1,7 @@
 package com.etoak.utils;
 
+import com.etoak.exception.ParamException;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -23,6 +25,6 @@ public class ValidateUtils {
             String message=violation.getMessage();
             buffer.append(message);
         }
-        throw  new RuntimeException("参数错误： "+buffer.toString());
+        throw  new ParamException("参数错误： "+buffer.toString());
     }
 }
