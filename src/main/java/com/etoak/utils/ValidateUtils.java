@@ -1,6 +1,7 @@
 package com.etoak.utils;
 
 import com.etoak.exception.ParamException;
+import org.apache.commons.collections4.CollectionUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -16,15 +17,18 @@ public class ValidateUtils {
         validator=factory.getValidator();
     }
 
-    public static void validate(Object object){
-        Set<ConstraintViolation<Object>> violations=validator.validate(object);
-        Iterator<ConstraintViolation<Object>> iterator=violations.iterator();
-        StringBuffer buffer =new StringBuffer();
-        while(iterator.hasNext()){
-            ConstraintViolation<Object> violation=iterator.next();
-            String message=violation.getMessage();
-            buffer.append(message);
+
+    public static void validate(Object object) {
+        Set<ConstraintViolation<Object>> violations = validator.validate(object);
+        if (CollectionUtils.isNotEmpty(violations)) {
+            Iterator<ConstraintViolation<Object>> iterator = violations.iterator();
+            StringBuffer buffer = new StringBuffer();
+            while (iterator.hasNext()) {
+                ConstraintViolation<Object> violation = iterator.next();
+                String message = violation.getMessage();
+                buffer.append(message).append(";");
+            }
+            throw new ParamException("参数错误 : " + buffer.toString());
         }
-        throw  new ParamException("参数错误： "+buffer.toString());
     }
 }
