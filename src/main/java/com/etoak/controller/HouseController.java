@@ -76,6 +76,7 @@ public class HouseController {
         houseService.addHouse(house);
         return "redirect:/house/toAdd";
     }
+
     @PostMapping("/add2")
     public String addHouse(@RequestParam("file") MultipartFile file, House house) throws IOException {
         //hirbernate 得验证
@@ -107,21 +108,16 @@ public class HouseController {
                                    HouseVo houseVo,
                                    @RequestParam(value = "rentalList[]",required = false)String[] rentalList
     ) {
-        //1.处理价格范围的方法
-        this.handleRental(houseVo,rentalList);
+        this.handleRental(houseVo,rentalList);//1.处理价格范围的方法
         log.info("pageNum - {}, pageSize - {}, houseVo - {}", pageNum, pageSize, houseVo);
         Page<HouseVo> houseVoPage = houseService.queryList(pageNum, pageSize, houseVo,rentalList);
         return houseVoPage;
     }
-
     //处理价格范围的方法
     private void handleRental(HouseVo houseVo, String[] rentalList) {
-
         if(ArrayUtils.isNotEmpty(rentalList)){
             List<Map<String,Integer>> rentalMapList = new ArrayList<>();
-
             log.info(String.valueOf(rentalList));//rentalList[]: 100-1000  rentalList[]: 1000-1500
-
             for(String rental:rentalList){
                 //rental=100-1000; 或  rental=1000-1500
                 String[] rentalArray =rental.split("-");
@@ -148,6 +144,11 @@ public class HouseController {
         return "house/list";
     }
 
+    @PutMapping("/update")//配置post转成put的过滤器  RestFilterConfig
+    public String update(House house){
 
-
+        log.info("house->{}",house);
+        houseService.updateHouse(house);
+        return "redirect:/house/toList";
+    }
 }

@@ -46,4 +46,14 @@ public class HouseServiceImpl  implements HouseService {
         PageInfo<HouseVo> info =new PageInfo<>(houseVoList);
         return new Page<HouseVo>(info.getPageNum(),info.getPageSize(),info.getTotal(),houseVoList,info.getPages());
     }
+
+    @Override
+    public int updateHouse(House house) {
+        if(house.getArea()!=null){
+            Area area=areaMapper.queryById(house.getArea());
+            house.setAreaName(area.getName());
+        }
+        log.info("house->{}",house);
+        return houseMapper.updateHouse(house);
+    }
 }

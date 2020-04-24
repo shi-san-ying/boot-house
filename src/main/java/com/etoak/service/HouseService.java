@@ -11,6 +11,9 @@ public interface HouseService {
 
     //房屋列表查询                 页码      每页记录      条件
     Page<HouseVo> queryList(int pageNum, int pageSize, HouseVo houseVo, String[] rentalList);
+
+    //更新房源信息
+    int updateHouse(House house);
 }
 
 
