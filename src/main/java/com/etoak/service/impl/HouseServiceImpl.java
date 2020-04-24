@@ -56,4 +56,9 @@ public class HouseServiceImpl  implements HouseService {
         log.info("house->{}",house);
         return houseMapper.updateHouse(house);
     }
+
+    @Override
+    public int deleteById(int id) {
+        return houseMapper.deleteById(id);
+    }
 }

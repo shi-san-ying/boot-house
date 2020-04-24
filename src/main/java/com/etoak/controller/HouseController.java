@@ -144,6 +144,7 @@ public class HouseController {
         return "house/list";
     }
 
+    //更新房源信息
     @PutMapping("/update")//配置post转成put的过滤器  RestFilterConfig
     public String update(House house){
 
@@ -151,4 +152,11 @@ public class HouseController {
         houseService.updateHouse(house);
         return "redirect:/house/toList";
     }
+    //删除房源信息
+    @DeleteMapping("/{id}")
+    public String deleteHouse(@PathVariable("id") int id){
+        houseService.deleteById(id);
+        return "redirect:/house/toList";
+    }
+
 }

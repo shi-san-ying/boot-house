@@ -14,6 +14,8 @@ public interface HouseService {
 
     //更新房源信息
     int updateHouse(House house);
+
+    int deleteById(int id);
 }
 
 
