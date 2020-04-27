@@ -16,4 +16,8 @@
             NOW()
        )
    </insert>
+
+   <select id="queryByName" parameterType="String" resultType="User">
+       select id,name,password,gender,age,email,birthday,state from t_boot_user where name=#{name}
+   </select>
 </mapper>

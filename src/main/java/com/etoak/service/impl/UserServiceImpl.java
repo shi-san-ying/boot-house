@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
         int addResult = userMapper.addUser(user);
         //返回的自增id会映射到user的id属性上
         log.info("user-->{}",user);
+        /*
         //发送jms消息 //email发送
         jmsTemplate.send("email",session -> {
             Email email= new Email();
@@ -37,6 +38,12 @@ public class UserServiceImpl implements UserService {
             email.setContent("请点击激活:http://localhost:8000/boot/user/active/"+user.getId());
             return session.createTextMessage(JSONObject.toJSONString(email));
         });
+        */
         return addResult;
+    }
+
+    @Override
+    public User queryByName(String name) {
+        return userMapper.queryByName(name);
     }
 }
